@@ -18,7 +18,7 @@ service<http:Service> greeting bind listener {
         methods: ["POST"]
     }
     greet (endpoint caller, http:Request request) {
-        http:Response response = {};
+        http:Response response = new;
 
         // var is a generic data type for assignment
         var reqPayloadVar = request.getStringPayload();
@@ -33,7 +33,7 @@ service<http:Service> greeting bind listener {
             }
 
             // reqPayloadVar is null or any other type
-            any | null => {
+            any | () => {
                 io:println("No payload found!");
             }
         }
