@@ -1,8 +1,6 @@
 import ballerina/http;
 import ballerina/io;
 
-
-
 // Annotations decorate code
 // Change the service URL base to '/greeting'
 @http:ServiceConfig {
