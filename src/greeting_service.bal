@@ -1,14 +1,18 @@
 import ballerina/http;
 import ballerina/io;
 
-// Annotations decorate code
-// Change the service URL base to '/greeting'
+endpoint http:Listener listener {
+  port:9090
+};
+
+// Annotations decorate code.
+// Change the service URL base to '/greeting'.
 @http:ServiceConfig {
     basePath:"/greeting"
 }
-service<http:Service> greeting bind {} {
+service<http:Service> greeting bind listener {
 
-  // Decorate the 'greet' resource to accept POST requests
+  // Decorate the 'greet' resource to accept POST requests.
   @http:ResourceConfig{
     path: "/",
     methods: ["POST"]
@@ -17,11 +21,10 @@ service<http:Service> greeting bind {} {
     http:Response response = new;
 
     // Check statement matches the output type of the
-    // getStringPayload method to a string. If not it
-    // throws an error.
+    // getStringPayload method to a string. If not it throws
+    // an error.
     string reqPayload = check request.getStringPayload();
-    response.setStringPayload("Hello, "
-                + reqPayload + "!\n");
+    response.setStringPayload("Hello, " + reqPayload + "!\n");
     _ = caller -> respond(response);
   }
 }
