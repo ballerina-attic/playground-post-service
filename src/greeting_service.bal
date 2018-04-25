@@ -21,10 +21,10 @@ service<http:Service> greeting bind listener {
     http:Response response = new;
 
     // Check statement matches the output type of the
-    // getStringPayload method to a string. If not it throws
+    // getPayloadAsString method to a string. If not it throws
     // an error.
-    string reqPayload = check request.getStringPayload();
-    response.setStringPayload("Hello, " + reqPayload + "!\n");
+    string reqPayload = check request.getPayloadAsString();
+    response.setTextPayload("Hello, " + reqPayload + "!\n");
     _ = caller -> respond(response);
   }
 }
