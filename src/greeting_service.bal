@@ -1,6 +1,7 @@
 import ballerina/http;
 import ballerina/io;
 
+// Listener endpoint that a service binds to
 endpoint http:Listener listener {
   port:9090
 };
