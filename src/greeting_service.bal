@@ -13,7 +13,7 @@ endpoint http:Listener listener {
 }
 service<http:Service> greeting bind listener {
 
-  // Decorate the 'greet' resource to accept POST requests.
+  // Decorate the 'greet' resource to accept POST requests
   @http:ResourceConfig{
     path: "/",
     methods: ["POST"]
@@ -21,12 +21,10 @@ service<http:Service> greeting bind listener {
   greet (endpoint caller, http:Request request) {
     http:Response response = new;
 
-    // Check statement matches the output type of the
-    // getPayloadAsString method to a string. If not it
-    // throws an error.
+    // 'check' operator matches the output type of the function.
+    // If the return is not a 'string', then it throws an error.
     string reqPayload = check request.getPayloadAsString();
-    response.setTextPayload("Hello, " + untaint reqPayload
-                  + "!\n");
+    response.setTextPayload("Hello, "+ untaint reqPayload +"!\n");
     _ = caller -> respond(response);
   }
 }
