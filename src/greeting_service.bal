@@ -1,38 +1,31 @@
 import ballerina/http;
 import ballerina/log;
 
-// Listener endpoint that a service binds to
-listener http:Listener ep = new(9090);
+// Listener endpoint that a service binds to.
+listener http:Listener endpoint = new(9090);
 
 // Annotations decorate code.
 // Change the service URL base to '/greeting'.
 @http:ServiceConfig {
     basePath:"/greeting"
 }
-service greeting on ep {
+service greeting on endpoint {
 
-  // Decorate the 'greet' resource to accept POST requests
+  // Decorate the 'greet' resource to accept POST requests.
   @http:ResourceConfig{
     path: "/",
     methods: ["POST"]
   }
-  resource function greet (http:Caller caller, http:Request request) {
+  resource function greet(http:Caller caller, http:Request request)
+                      returns error? {
     http:Response response = new;
 
-    // Return result can either be a string or an error.
-    var result = request.getPayloadAsString();
-    if (result is string) {
-      response.setPayload("Hello, "+ untaint result +"!\n");
-      var errDetail = caller->respond(response);
-      handleError(errDetail);
-    } else if (result is error) {
-      log:printError(result.reason(), err = result);
-    }
-  }
-}
-
-function handleError(error? result) {
-  if (result is error) {
-    log:printError(result.reason(), err = result);
+    // If an error is returned from the `getPayloadAsString` method,
+    // resource function gets returned with that error which ultimately
+    // is sent to the caller.
+    string result = check request.getPayloadAsString();
+    response.setPayload("Hello, "+ untaint result +"!\n");
+    _ = caller->respond(response);
+    return;
   }
 }
