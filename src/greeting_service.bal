@@ -20,9 +20,9 @@ service greeting on endpoint {
                       returns error? {
     http:Response response = new;
 
-    // If an error is returned from the `getPayloadAsString` method,
-    // resource function gets returned with that error which ultimately
-    // is sent to the caller.
+    // If an error is returned from the `getPayloadAsString`
+    // method, resource function gets returned with that error
+    // which ultimately is sent to the caller.
     string result = check request.getPayloadAsString();
     response.setPayload("Hello, "+ untaint result +"!\n");
     _ = caller->respond(response);
