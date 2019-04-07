@@ -23,9 +23,9 @@ service greeting on endpoint {
     // If an error is returned from the `getPayloadAsString`
     // method, resource function gets returned with that error
     // which ultimately is sent to the caller.
-    string result = check request.getPayloadAsString();
+    string result = check request.getTextPayload();
     response.setPayload("Hello, "+ untaint result +"!\n");
-    _ = caller->respond(response);
+    _ = check caller->respond(response);
     return;
   }
 }
